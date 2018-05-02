@@ -34,6 +34,14 @@
         android:textSize="20sp"
       />
 
+    <EditText
+        android:id="@+id/edtDesc"
+        android:maxLines="4"
+        android:hint="Description"
+        android:gravity="left|top"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
     <Button
         android:id="@+id/btnCancel"
         android:layout_marginTop="20dp"
