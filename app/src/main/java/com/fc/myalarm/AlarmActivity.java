@@ -13,14 +13,21 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.net.URI;
+
 public class AlarmActivity extends AppCompatActivity {
 
     Uri ring;
     MediaPlayer mediaPlayer;
     private TextView txtMessage;
     private FloatingActionButton btnStop;
+    private int alarmId;
+    private DBHelper dbHelper;
+    String savedRing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("#####","Alarm Activity Created");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 + WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
                 + WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
@@ -28,16 +35,30 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+
+
+
+        dbHelper = new DBHelper(this);
+        alarmId = getIntent().getIntExtra("id",0);
+
         txtMessage = findViewById(R.id.txtMessage);
         btnStop = findViewById(R.id.btnStop);
 
+        txtMessage.setText(dbHelper.getLable(alarmId));
 
-        txtMessage.setText("Alarm Started.... \nWake Up !!!");
+        savedRing = dbHelper.getRing(alarmId);
 
-        ring = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        if (RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM) != null){
-            ring = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (savedRing.equalsIgnoreCase("")){
+            ring = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM) != null){
+                ring = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            }
+        }else {
+            ring = Uri.parse(savedRing);
         }
+
+        Log.d("#####","Alarm Details "+alarmId+" label "+dbHelper.getLable(alarmId));
+
 
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
@@ -73,6 +94,11 @@ public class AlarmActivity extends AppCompatActivity {
                 if (mediaPlayer.isPlaying()){
                     mediaPlayer.stop();
                 }
+
+                MyAlarm myAlarm = dbHelper.getAlarm(alarmId);
+
+                myAlarm.setStatus(false);
+                dbHelper.changeStatus(myAlarm);
 
                 finish();
 
