@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         btnCancel = findViewById(R.id.btnCancel);
         edtTime = findViewById(R.id.edtHour);
 
-
-
         calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
