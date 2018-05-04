@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements
 
             String title = ringtone.getTitle(getApplicationContext());
 
-            Log.d("#####","Ringtone Name : "+ringtone.getTitle(getApplicationContext()));
+            Log.d("#####","Ringtone Title : "+ringtone.getTitle(getApplicationContext()));
 
 
             MyAlarm myAlarm = getObjectById(mAlarmId);
