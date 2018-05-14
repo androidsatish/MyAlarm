@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements
     private int mIndex;
     private long mAlarmId;
     private DBHelper dbHelper;
+    private int currentHour,currentMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        Calendar calendar = Calendar.getInstance();
+        currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        currentMinute = calendar.get(Calendar.MINUTE);
 
     }
 
@@ -124,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements
               adapterAlarmList.setMyAlarmArrayList(myAlarmArrayList);
 
               setAlarm((int) id,hourOfDay,minute);
+
+
+
+              Toast.makeText(getApplicationContext(),"Alarm set for ",Toast.LENGTH_SHORT).show();
           }
 
 
@@ -191,8 +200,6 @@ public class MainActivity extends AppCompatActivity implements
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
 
     }
 
@@ -293,6 +300,10 @@ public class MainActivity extends AppCompatActivity implements
                 myAlarmArrayList.remove(index);
 
                 adapterAlarmList.setMyAlarmArrayList(myAlarmArrayList);
+
+                cancelAlarm(alarmId);
+
+                Toast.makeText(getApplicationContext(),"Alarm Removed",Toast.LENGTH_SHORT).show();
             }
         });
 

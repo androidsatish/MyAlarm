@@ -97,8 +97,11 @@ public class AlarmActivity extends AppCompatActivity {
 
                 MyAlarm myAlarm = dbHelper.getAlarm(alarmId);
 
-                myAlarm.setStatus(false);
-                dbHelper.changeStatus(myAlarm);
+                if (myAlarm != null){
+                    myAlarm.setStatus(false);
+                    dbHelper.changeStatus(myAlarm);
+                }
+
 
                 finish();
 
