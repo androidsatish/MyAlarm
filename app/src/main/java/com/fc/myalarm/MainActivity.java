@@ -34,8 +34,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,OnAlarmChangedListener{
@@ -130,10 +133,7 @@ public class MainActivity extends AppCompatActivity implements
 
               setAlarm((int) id,hourOfDay,minute);
 
-
-
-              Toast.makeText(getApplicationContext(),"Alarm set for ",Toast.LENGTH_SHORT).show();
-          }
+              }
 
 
         }else {
@@ -215,7 +215,37 @@ public class MainActivity extends AppCompatActivity implements
 
        // alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_HOUR,pendingIntent);
 
-        Log.d("#####","Alarm id :"+alarmId+" set for "+hourOfDay+":"+minute);
+       String msg =  getDifference(hourOfDay,minute);
+
+       Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+
+    }
+
+    private String getDifference(int hourOfDay, int minute) {
+
+        String t1 = hourOfDay+":"+minute+":00";
+        String t2 = currentHour+":"+currentMinute+":00";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        try {
+            Date date1 = sdf.parse(t1);
+            Date date2 = sdf.parse(t2);
+
+            long diff = date1.getTime() - date2.getTime();
+            long hours = diff/(1000*60*60);
+            long mins = (diff % (1000*60*60)) / (1000*60);
+
+            Log.d("########","Diff is "+hours+" hours and "+mins+" mins");
+
+            if (hours == 0){
+                return "Alarm is set for "+mins+" minutes from now";
+
+            }else return "Alarm is set for "+hours+" hours and "+mins+" minutes from now";
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "Alarm Set";
+        }
 
     }
 

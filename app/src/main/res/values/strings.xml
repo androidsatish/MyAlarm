@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyAlarm</string>
+    <string name="domain_name">Domain Name</string>
+    <string name="user_name">Username / UserId</string>
+    <string name="password">Password</string>
+    <string name="get_saved_passwords">Get Saved Passwords</string>
 </resources>
