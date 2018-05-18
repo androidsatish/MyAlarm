@@ -1,17 +1,20 @@
 package com.fc.myalarm;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,7 +23,7 @@ public class PasswordSheetFragment extends BottomSheetDialogFragment implements 
     private RecyclerView listPasswords;
     private ArrayList<MyPassword>myPasswordArrayList;
     private AdapterPasswordList adapterPasswordList;
-
+    private PasswordDBHelper dbHelper;
     public PasswordSheetFragment() {
     }
 
@@ -30,6 +33,7 @@ public class PasswordSheetFragment extends BottomSheetDialogFragment implements 
 
         setStyle(DialogFragment.STYLE_NO_FRAME,android.R.style.Theme_Black_NoTitleBar);
         myPasswordArrayList =  getArguments().getParcelableArrayList("data");
+        dbHelper = new PasswordDBHelper(getActivity(),PasswordManagerActivity.path);
 
     }
 
@@ -56,9 +60,36 @@ public class PasswordSheetFragment extends BottomSheetDialogFragment implements 
     }
 
     @Override
-    public void onDeleteClicked(int index, MyPassword myPassword) {
-        myPasswordArrayList.remove(index);
-        adapterPasswordList.setMyPasswordArrayList(myPasswordArrayList);
+    public void onDeleteClicked(final int index, final MyPassword myPassword) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbHelper.deleteEntry(myPassword.getId());
+                myPasswordArrayList.remove(index);
+                adapterPasswordList.setMyPasswordArrayList(myPasswordArrayList);
+
+                if (myPasswordArrayList.size() == 0){
+                    dismiss();
+                }
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        builder.setTitle("Do you want to delete this alarm ?");
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
+
+        alertDialog.show();
+
     }
 
     @Override

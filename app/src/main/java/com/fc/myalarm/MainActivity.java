@@ -1,6 +1,7 @@
 package com.fc.myalarm;
 
 import android.app.AlarmManager;
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,OnAlarmChangedListener{
 
     private static final int RQS_RINGTONEPICKER = 666;
+    private static final int INTENT_AUTHENTICATE = 555;
     private TimePickerDialog timePickerDialog;
     private Calendar calendar;
     private PendingIntent pendingIntent;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements
     private long mAlarmId;
     private DBHelper dbHelper;
     private int currentHour,currentMinute;
+    private TextView txtTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements
 
         dbHelper = new DBHelper(this);
 
+        txtTitle = findViewById(R.id.txtTitle);
         btnAdd = findViewById(R.id.btnAddAlarm);
         listViewAlarms = findViewById(R.id.listAlarms);
         listViewAlarms.setLayoutManager(new LinearLayoutManager(this));
@@ -79,19 +83,24 @@ public class MainActivity extends AppCompatActivity implements
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isNewAlarm = true;
-                showTimePicker();
+        btnAdd.setOnClickListener(v -> {
+            isNewAlarm = true;
+            showTimePicker();
 
-            }
         });
 
         Calendar calendar = Calendar.getInstance();
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinute = calendar.get(Calendar.MINUTE);
 
+        txtTitle.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,NotePadActivity.class)));
+
+        txtTitle.setOnLongClickListener(v -> {
+          //  authenticateUser();
+            startActivity(new Intent(MainActivity.this,PasswordManagerActivity.class));
+
+            return true;
+        });
     }
 
     @Override
@@ -397,6 +406,24 @@ public class MainActivity extends AppCompatActivity implements
                 dbHelper.changeRing(myAlarm);
             }
 
+        }else if (requestCode == INTENT_AUTHENTICATE){
+            if (resultCode == RESULT_OK){
+                startActivity(new Intent(MainActivity.this,PasswordManagerActivity.class));
+            }else {
+                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
+    private void authenticateUser(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+
+            if (km.isKeyguardSecure()) {
+                Intent authIntent = km.createConfirmDeviceCredentialIntent("Authenticate", "Tell me is that you ?");
+                startActivityForResult(authIntent, INTENT_AUTHENTICATE);
+            }
+        }
+    }
+
 }

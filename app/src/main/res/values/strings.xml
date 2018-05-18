@@ -4,4 +4,12 @@
     <string name="user_name">Username / UserId</string>
     <string name="password">Password</string>
     <string name="get_saved_passwords">Get Saved Passwords</string>
+    <string name="client_id">389883030676-ikck2iorh1vgnjc2pjt5aen3umbcq3ds.apps.googleusercontent.com</string>
+    <string name="sync">Sync Passwords To Drive</string>
+    <string name="file_created">File Successfully Created !</string>
+    <string name="file_create_error">Error File Creating !!!</string>
+    <string name="file_not_selected">File Not Selected</string>
+    <string name="content_loaded">File Loaded</string>
+    <string name="read_failed">File Read Failed</string>
+    <string name="syncDown">Sync Passwords From Drive</string>
 </resources>

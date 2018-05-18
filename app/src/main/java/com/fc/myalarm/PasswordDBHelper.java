@@ -9,21 +9,16 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import static com.fc.myalarm.DBConstants.CREATE_TABLE_PASSWORD;
+import static com.fc.myalarm.DBConstants.DOMAIN;
+import static com.fc.myalarm.DBConstants.PASSWORD;
+import static com.fc.myalarm.DBConstants.PASSWORD_ID;
+import static com.fc.myalarm.DBConstants.TABLE_PASSWORDS;
+import static com.fc.myalarm.DBConstants.USERNAME;
+
 public class PasswordDBHelper extends SQLiteOpenHelper{
 
     private SQLiteDatabase db;
-
-    public static final String TABLE_PASSWORDS = "Passwards";
-    public static final String DOMAIN = "domain_name";
-    public static final String USERANME = "user_name";
-    public static final String PASSWORD = "password";
-    public static final String PASSWORD_ID = "password_id";
-
-    public static final String CREATE_TABLE_PASSWORD = "create table if not exists "+TABLE_PASSWORDS+
-            "("+PASSWORD_ID+" integer primary key autoincrement,"+
-            DOMAIN+" text,"+
-            USERANME+" text,"+
-            PASSWORD+" text)";
 
     public PasswordDBHelper(Context context,String path) {
         super(context,path+"myPassword.db", null, 1);
@@ -45,7 +40,7 @@ public class PasswordDBHelper extends SQLiteOpenHelper{
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DOMAIN,domain);
-        contentValues.put(USERANME,username);
+        contentValues.put(USERNAME,username);
         contentValues.put(PASSWORD,password);
 
        return db.insert(TABLE_PASSWORDS,null,contentValues);
@@ -63,7 +58,7 @@ public class PasswordDBHelper extends SQLiteOpenHelper{
 
                 int id = cursor.getInt(cursor.getColumnIndex(PASSWORD_ID));
                 String domain = cursor.getString(cursor.getColumnIndex(DOMAIN));
-                String username = cursor.getString(cursor.getColumnIndex(USERANME));
+                String username = cursor.getString(cursor.getColumnIndex(USERNAME));
                 String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
 
                 MyPassword m = new MyPassword(domain,username,password,id);
@@ -77,5 +72,13 @@ public class PasswordDBHelper extends SQLiteOpenHelper{
         return myPasswords;
     }
 
+    public int deleteEntry(int id){
+        db = this.getWritableDatabase();
+
+        String whereClause = PASSWORD_ID+"=?";
+        String[] whereArgs = {String.valueOf(id)};
+
+        return db.delete(TABLE_PASSWORDS,whereClause,whereArgs);
+    }
 
 }
