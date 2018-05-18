@@ -6,14 +6,14 @@ import android.os.Parcelable;
 public class MyPassword implements Parcelable{
     private String domain,username,password;
     private int id;
+    private boolean isVisible;
 
-
-
-    public MyPassword(String domain, String username, String password, int id) {
+    public MyPassword(String domain, String username, String password, int id, boolean isVisible) {
         this.domain = domain;
         this.username = username;
         this.password = password;
         this.id = id;
+        this.isVisible = isVisible;
     }
 
     protected MyPassword(Parcel in) {
@@ -21,6 +21,7 @@ public class MyPassword implements Parcelable{
         username = in.readString();
         password = in.readString();
         id = in.readInt();
+        isVisible = in.readByte() != 0;
     }
 
     @Override
@@ -29,6 +30,7 @@ public class MyPassword implements Parcelable{
         dest.writeString(username);
         dest.writeString(password);
         dest.writeInt(id);
+        dest.writeByte((byte) (isVisible ? 1 : 0));
     }
 
     @Override
@@ -47,6 +49,14 @@ public class MyPassword implements Parcelable{
             return new MyPassword[size];
         }
     };
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 
     public String getDomain() {
         return domain;

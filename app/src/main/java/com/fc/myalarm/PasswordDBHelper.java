@@ -61,7 +61,7 @@ public class PasswordDBHelper extends SQLiteOpenHelper{
                 String username = cursor.getString(cursor.getColumnIndex(USERNAME));
                 String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
 
-                MyPassword m = new MyPassword(domain,username,password,id);
+                MyPassword m = new MyPassword(domain,username,password,id,false);
 
                 myPasswords.add(m);
 

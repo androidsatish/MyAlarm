@@ -503,7 +503,7 @@ public class PasswordManagerActivity extends AppCompatActivity {
 
     private String getCurrentDate(){
         Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Log.d("######","Date "+sfd.format(date));
         return sfd.format(date);
     }

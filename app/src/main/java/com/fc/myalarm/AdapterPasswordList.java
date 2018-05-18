@@ -47,8 +47,15 @@ public class AdapterPasswordList extends RecyclerView.Adapter<AdapterPasswordLis
     @Override
     public void onBindViewHolder(@NonNull DataViewHolder holder, int position) {
         holder.txtUsername.setText(myPasswordArrayList.get(position).getUsername());
-        holder.txtPassword.setText(myPasswordArrayList.get(position).getPassword());
         holder.txtDomain.setText(myPasswordArrayList.get(position).getDomain());
+
+        if (myPasswordArrayList.get(position).isVisible()){
+            holder.imgVisible.setBackgroundResource(R.drawable.ic_action_not_visible);
+            holder.txtPassword.setText(myPasswordArrayList.get(position).getPassword());
+        }else {
+            holder.imgVisible.setBackgroundResource(R.drawable.ic_action_visible);
+            holder.txtPassword.setText("********");
+        }
     }
 
     @Override
@@ -58,7 +65,7 @@ public class AdapterPasswordList extends RecyclerView.Adapter<AdapterPasswordLis
 
     public class DataViewHolder extends RecyclerView.ViewHolder{
         TextView txtDomain,txtUsername,txtPassword;
-        ImageView btnDelete,btnEdit;
+        ImageView btnDelete,btnEdit,imgVisible;
         public DataViewHolder(View itemView) {
             super(itemView);
             txtDomain = itemView.findViewById(R.id.txtDomainName);
@@ -66,27 +73,28 @@ public class AdapterPasswordList extends RecyclerView.Adapter<AdapterPasswordLis
             txtUsername = itemView.findViewById(R.id.txtUserName);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnEdit = itemView.findViewById(R.id.btnEdit);
+            imgVisible = itemView.findViewById(R.id.imgVisible);
 
-            btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            btnEdit.setOnClickListener(v -> {
 
-                    MyPassword myPassword = myPasswordArrayList.get(getAdapterPosition());
+                MyPassword myPassword = myPasswordArrayList.get(getAdapterPosition());
 
-                    listener.onEditClicked(getAdapterPosition(),myPassword);
-                }
+                listener.onEditClicked(getAdapterPosition(),myPassword);
             });
 
 
-            btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            btnDelete.setOnClickListener(v -> {
 
-                   MyPassword myPassword = myPasswordArrayList.get(getAdapterPosition());
+               MyPassword myPassword = myPasswordArrayList.get(getAdapterPosition());
 
-                   listener.onDeleteClicked(getAdapterPosition(),myPassword);
+               listener.onDeleteClicked(getAdapterPosition(),myPassword);
 
-                }
+            });
+
+            imgVisible.setOnClickListener(v -> {
+                MyPassword myPassword = myPasswordArrayList.get(getAdapterPosition());
+
+                listener.onVisibilityChanged(getAdapterPosition(),myPassword,!myPassword.isVisible());
             });
 
         }
@@ -95,6 +103,7 @@ public class AdapterPasswordList extends RecyclerView.Adapter<AdapterPasswordLis
     public interface RecycleViewItemListener{
         void onDeleteClicked(int index,MyPassword myPassword);
         void onEditClicked(int index,MyPassword myPassword);
+        void onVisibilityChanged(int index,MyPassword myPassword,boolean b);
     }
 
 }

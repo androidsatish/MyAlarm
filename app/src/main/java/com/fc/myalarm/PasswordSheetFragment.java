@@ -96,4 +96,12 @@ public class PasswordSheetFragment extends BottomSheetDialogFragment implements 
     public void onEditClicked(int index, MyPassword myPassword) {
 
     }
+
+    @Override
+    public void onVisibilityChanged(int index, MyPassword myPassword, boolean b) {
+           myPassword.setVisible(b);
+           myPasswordArrayList.remove(index);
+           myPasswordArrayList.add(index,myPassword);
+           adapterPasswordList.setMyPasswordArrayList(myPasswordArrayList);
+    }
 }
