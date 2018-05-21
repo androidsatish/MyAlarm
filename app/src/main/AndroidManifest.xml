@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fc.myalarm">
 
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -24,8 +28,16 @@
             android:process=":remote" />
 
         <activity android:name=".AlarmActivity" />
-        <activity android:name=".NotePadActivity"/>
-        <activity android:name=".PasswordManagerActivity"/>
+        <activity android:name=".NotePadActivity" />
+        <activity android:name=".PasswordManagerActivity" />
+
+        <receiver android:name=".IncomingCallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".DrivingProfileActivity"></activity>
     </application>
 
 </manifest>

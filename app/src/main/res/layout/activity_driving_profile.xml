@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".DrivingProfileActivity">
+
+   <Switch
+       android:id="@+id/aSwitchMessage"
+       android:padding="@dimen/text_padding"
+       android:text="@string/enable_message_service"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" />
+
+    <Switch
+        android:layout_marginTop="10dp"
+        android:id="@+id/aSwitchReject"
+        android:padding="@dimen/text_padding"
+        android:text="@string/reject_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edtMessage"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/back_edit_large"
+        android:padding="@dimen/text_padding"
+        android:textSize="13sp"
+        android:text="@string/i_am_driving_now_call_u_later"
+        android:hint="Message To Send...."
+        android:gravity="top|left"
+        android:maxLength="150"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_marginTop="20dp"
+        android:text="Save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

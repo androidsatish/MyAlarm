@@ -12,4 +12,7 @@
     <string name="content_loaded">File Loaded</string>
     <string name="read_failed">File Read Failed</string>
     <string name="syncDown">Sync Passwords From Drive</string>
+    <string name="enable_message_service">Enable Message Service</string>
+    <string name="reject_call">Auto Reject Call</string>
+    <string name="i_am_driving_now_call_u_later">I am driving now, call u later</string>
 </resources>

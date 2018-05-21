@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinute = calendar.get(Calendar.MINUTE);
 
-        txtTitle.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,NotePadActivity.class)));
+        txtTitle.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,DrivingProfileActivity.class)));
 
         txtTitle.setOnLongClickListener(v -> {
           //  authenticateUser();
